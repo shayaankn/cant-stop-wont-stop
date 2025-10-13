@@ -14,6 +14,8 @@ const car = {
   acceleration: 0.05,
   friction: 0.02,
   turnSpeed: 0.04,
+  steer: 0,
+  steerDecay: 0.1, // how quickly steering returns to center
 };
 
 // --- Input state ---
@@ -44,11 +46,23 @@ function update() {
     if (car.speed < 0) car.speed = 0;
   }
 
-  // Turning (stronger at higher speeds)
-  if (keys.ArrowLeft)
-    car.angle -= car.turnSpeed * (car.speed / car.maxSpeed + 0.3);
-  if (keys.ArrowRight)
-    car.angle += car.turnSpeed * (car.speed / car.maxSpeed + 0.3);
+  // Steering
+  if (keys.ArrowLeft) {
+    car.steer -= 0.1;
+    if (car.steer < -1) car.steer = -1;
+  } else if (keys.ArrowRight) {
+    car.steer += 0.1;
+    if (car.steer > 1) car.steer = 1;
+  } else {
+    // Gradually return steering to 0
+    if (car.steer > 0) car.steer = Math.max(0, car.steer - car.steerDecay);
+    if (car.steer < 0) car.steer = Math.min(0, car.steer + car.steerDecay);
+  }
+
+  // Apply turning ONLY if the car is moving
+  if (car.speed > 0.2) {
+    car.angle += car.steer * car.turnSpeed * (car.speed / car.maxSpeed + 0.2);
+  }
 
   // Friction — makes it feel like sliding on gravel
   car.speed *= 1 - car.friction;
