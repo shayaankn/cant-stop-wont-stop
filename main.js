@@ -18,6 +18,15 @@ const car = {
   steerDecay: 0.05, // how quickly steering returns to center
 };
 
+// Map properties
+const mapImg = new Image();
+mapImg.src = "./assets/maps/1.jpg";
+
+const map = {
+  width: 1600,
+  height: 1200,
+};
+
 // Input state
 const keys = {
   ArrowLeft: false,
@@ -71,22 +80,34 @@ function update() {
   car.x += Math.cos(car.angle) * car.speed;
   car.y += Math.sin(car.angle) * car.speed;
 
-  // Boundaries
-  if (car.x < 0) car.x = 0;
-  if (car.y < 0) car.y = 0;
-  if (car.x > canvas.width) car.x = canvas.width;
-  if (car.y > canvas.height) car.y = canvas.height;
+  // Clamp car within map boundaries
+  car.x = Math.max(0, Math.min(map.width, car.x));
+  car.y = Math.max(0, Math.min(map.height, car.y));
 }
 
 // Draw function
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+  // Camera logic
+  const cameraX = car.x - canvas.width / 2;
+  const cameraY = car.y - canvas.height / 2;
+
+  ctx.save();
+  // Shift everything opposite to camera position
+  ctx.translate(-cameraX, -cameraY);
+
+  // Draw map
+  ctx.drawImage(mapImg, 0, 0, map.width, map.height);
+
+  // Draw car
   ctx.save();
   ctx.translate(car.x, car.y);
   ctx.rotate(car.angle);
   ctx.drawImage(carImg, -carImg.width / 2, -carImg.height / 2);
   ctx.restore();
+
+  ctx.restore(); // restore after camera
 }
 
 // Game loop
@@ -96,7 +117,12 @@ function loop() {
   requestAnimationFrame(loop);
 }
 
-// Start
-carImg.onload = () => {
-  loop();
-};
+// Start (when both images are loaded)
+let imagesLoaded = 0;
+function onImageLoad() {
+  imagesLoaded++;
+  if (imagesLoaded === 2) loop();
+}
+
+carImg.onload = onImageLoad;
+mapImg.onload = onImageLoad;
