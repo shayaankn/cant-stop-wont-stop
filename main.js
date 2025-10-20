@@ -1,7 +1,7 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-// --- Car properties ---
+// Car properties
 const carImg = new Image();
 carImg.src = "./assets/cars/1.png";
 
@@ -10,22 +10,22 @@ const car = {
   y: canvas.height / 2,
   angle: 0,
   speed: 0,
-  maxSpeed: 6,
-  acceleration: 0.05,
+  maxSpeed: 12,
+  acceleration: 0.15,
   friction: 0.02,
-  turnSpeed: 0.04,
+  turnSpeed: 0.08,
   steer: 0,
-  steerDecay: 0.1, // how quickly steering returns to center
+  steerDecay: 0.05, // how quickly steering returns to center
 };
 
-// --- Input state ---
+// Input state
 const keys = {
   ArrowLeft: false,
   ArrowRight: false,
   ArrowDown: false,
 };
 
-// --- Key handlers ---
+// Key handlers
 document.addEventListener("keydown", (e) => {
   if (keys.hasOwnProperty(e.key)) keys[e.key] = true;
 });
@@ -34,7 +34,7 @@ document.addEventListener("keyup", (e) => {
   if (keys.hasOwnProperty(e.key)) keys[e.key] = false;
 });
 
-// --- Update function ---
+// Update function
 function update() {
   // Auto acceleration
   car.speed += car.acceleration;
@@ -78,7 +78,7 @@ function update() {
   if (car.y > canvas.height) car.y = canvas.height;
 }
 
-// --- Draw function ---
+// Draw function
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -89,14 +89,14 @@ function draw() {
   ctx.restore();
 }
 
-// --- Game loop ---
+// Game loop
 function loop() {
   update();
   draw();
   requestAnimationFrame(loop);
 }
 
-// --- Start ---
+// Start
 carImg.onload = () => {
   loop();
 };
