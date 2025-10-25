@@ -4,10 +4,11 @@ const ctx = canvas.getContext("2d");
 // Car properties
 const carImg = new Image();
 carImg.src = "./assets/cars/1.png";
+const startPosition = { x: 400, y: 300 };
 
 const car = {
-  x: canvas.width / 2,
-  y: canvas.height / 2,
+  x: startPosition.x,
+  y: startPosition.y,
   angle: 0,
   speed: 0,
   maxSpeed: 12,
@@ -27,6 +28,12 @@ const map = {
   height: 1200,
 };
 
+// Offscreen canvas for collision detection
+const mapCanvas = document.createElement("canvas");
+mapCanvas.width = map.width;
+mapCanvas.height = map.height;
+const mapCtx = mapCanvas.getContext("2d");
+
 // Input state
 const keys = {
   ArrowLeft: false,
@@ -42,6 +49,42 @@ document.addEventListener("keydown", (e) => {
 document.addEventListener("keyup", (e) => {
   if (keys.hasOwnProperty(e.key)) keys[e.key] = false;
 });
+
+// Restart function
+function restartGame() {
+  car.x = startPosition.x;
+  car.y = startPosition.y;
+  car.angle = 0;
+  car.speed = 0;
+}
+
+// Collision detection
+function checkCollision() {
+  // ensure integer pixel coords
+  const px = Math.floor(car.x);
+  const py = Math.floor(car.y);
+
+  // bounds check (safe guard)
+  if (px < 0 || py < 0 || px >= map.width || py >= map.height) {
+    // outside map — consider this a collision
+    restartGame();
+    return;
+  }
+
+  // get pixel color under car
+  const pixel = mapCtx.getImageData(px, py, 1, 1).data;
+  const [r, g, b, a] = pixel;
+
+  // For debugging, uncomment to log values once:
+  // console.log("pixel at", px, py, r, g, b, a);
+
+  // simple grass detection (adjust thresholds for your map)
+  const isGrass = g > 190 && r < 185 && b < 70;
+
+  if (isGrass) {
+    restartGame();
+  }
+}
 
 // Update function
 function update() {
@@ -83,6 +126,9 @@ function update() {
   // Clamp car within map boundaries
   car.x = Math.max(0, Math.min(map.width, car.x));
   car.y = Math.max(0, Math.min(map.height, car.y));
+
+  // Check collision (after moving)
+  checkCollision();
 }
 
 // Draw function
@@ -121,7 +167,14 @@ function loop() {
 let imagesLoaded = 0;
 function onImageLoad() {
   imagesLoaded++;
-  if (imagesLoaded === 2) loop();
+  // if (imagesLoaded === 2) loop();
+  if (imagesLoaded === 2) {
+    // Draw the map into the offscreen canvas once here
+    mapCtx.drawImage(mapImg, 0, 0, map.width, map.height);
+
+    // start game loop
+    loop();
+  }
 }
 
 carImg.onload = onImageLoad;
