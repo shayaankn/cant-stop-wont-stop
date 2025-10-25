@@ -20,7 +20,7 @@ const car = {
 
 // Map properties
 const mapImg = new Image();
-mapImg.src = "./assets/maps/1.jpg";
+mapImg.src = "./assets/maps/2.jpg";
 
 const map = {
   width: 1600,
