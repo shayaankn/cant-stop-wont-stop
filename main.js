@@ -56,6 +56,10 @@ function restartGame() {
   car.y = startPosition.y;
   car.angle = 0;
   car.speed = 0;
+
+  // Trigger flicker
+  car.flicker = true;
+  setTimeout(() => (car.flicker = false), 1000); // lasts 1s
 }
 
 // Collision detection
@@ -150,6 +154,14 @@ function draw() {
   ctx.save();
   ctx.translate(car.x, car.y);
   ctx.rotate(car.angle);
+
+  // Handle flicker (if active)
+  if (car.flicker) {
+    const flickerTime = Date.now() % 200; // flicker speed
+    const opacity = flickerTime < 100 ? 0.3 : 1; // alternate visibility
+    ctx.globalAlpha = opacity;
+  }
+
   ctx.drawImage(carImg, -carImg.width / 2, -carImg.height / 2);
   ctx.restore();
 

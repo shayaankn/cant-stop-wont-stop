@@ -1,11 +1,34 @@
+/* GENERAL */
+
 body {
   margin: 0;
   background: #222;
   overflow: hidden;
 }
+
 canvas {
   display: block;
   margin: 0 auto;
   background: #444;
   border: 2px solid #555;
+}
+
+/* CAR */
+
+@keyframes carFlicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  25%,
+  75% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.1;
+  }
+}
+
+.flicker {
+  animation: carFlicker 1s ease-in-out 1;
 }
