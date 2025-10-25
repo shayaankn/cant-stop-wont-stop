@@ -11,10 +11,10 @@ const car = {
   y: startPosition.y,
   angle: 0,
   speed: 0,
-  maxSpeed: 12,
-  acceleration: 0.15,
+  maxSpeed: 14,
+  acceleration: 0.2,
   friction: 0.02,
-  turnSpeed: 0.08,
+  turnSpeed: 0.05,
   steer: 0,
   steerDecay: 0.05, // how quickly steering returns to center
 };
