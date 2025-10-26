@@ -97,10 +97,10 @@ function update() {
   if (car.speed > car.maxSpeed) car.speed = car.maxSpeed;
 
   // Braking
-  if (keys.ArrowDown) {
-    car.speed -= 0.2;
-    if (car.speed < 0) car.speed = 0;
-  }
+  // if (keys.ArrowDown) {
+  //   car.speed -= 0.2;
+  //   if (car.speed < 0) car.speed = 0;
+  // }
 
   // Steering
   if (keys.ArrowLeft) {
