@@ -12,7 +12,6 @@ Avoid going off-track — if you do, you’ll have to restart.
 **Controls:**
 - **Left Arrow** – Turn left
 - **Right Arrow** – Turn right
-- **Down Arrow** – Brake
 - (No acceleration key – the car accelerates automatically)
 
 ### How to Run
