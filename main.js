@@ -120,7 +120,7 @@ function update() {
     car.angle += car.steer * car.turnSpeed * (car.speed / car.maxSpeed + 0.2);
   }
 
-  // Friction — makes it feel like sliding on gravel
+  // Friction
   car.speed *= 1 - car.friction;
 
   // Move

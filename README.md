@@ -1,12 +1,12 @@
 ## Can't Stop, Won't Stop
 
-**Can't Stop, Won't Stop** is a lightweight, browser-based rally racing game built with pure **HTML, CSS, and JavaScript** — no game engines, no frameworks.
+**Can't Stop, Won't Stop** is a lightweight, browser-based racing game built with pure **HTML, CSS, and JavaScript** — no game engines, no frameworks.
 
 It’s currently in a **very early stage of development**.
 
 ### Gameplay
 
-Drive your rally car around a track!
+Drive your car around a track!
 Avoid going off-track — if you do, you’ll have to restart.
 
 **Controls:**
